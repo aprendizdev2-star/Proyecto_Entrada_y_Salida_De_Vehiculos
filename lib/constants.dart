@@ -1,3 +1,4 @@
+//Esto es constant.dart
 import 'package:flutter/material.dart';
 import 'login_page.dart'; // Importa tu login para poder volver
 

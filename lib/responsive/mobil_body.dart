@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../util/my_tile.dart';
+import '../ingreso_page.dart';
+import '../contratiempos_page.dart'; // Importación de la nueva página
 
 class MobileScaffold extends StatefulWidget {
   const MobileScaffold({Key? key}) : super(key: key);
-
   @override
   State<MobileScaffold> createState() => _MobileScaffoldState();
 }
 
 class _MobileScaffoldState extends State<MobileScaffold> {
-  // Función para los botones ovalados
-  Widget botonColorido(String texto, Color colorBorde) {
+  // Función para los botones ovalados del móvil
+  Widget botonColorido(String texto, Color colorBorde, VoidCallback onTap) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: onTap,
         style: OutlinedButton.styleFrom(
           side: BorderSide(color: colorBorde, width: 2),
           shape: const StadiumBorder(),
@@ -36,41 +37,42 @@ class _MobileScaffoldState extends State<MobileScaffold> {
       backgroundColor: defaultBackgroundColor,
       appBar: myAppBar,
       drawer: myDrawer,
-      body: SingleChildScrollView( // Permite hacer scroll si hay muchos botones
+      body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 10),
             const Text("Menú de Operaciones", style: TextStyle(fontWeight: FontWeight.bold)),
-            
-            // Rejilla que se ajusta al contenido
             GridView.count(
-              shrinkWrap: true, // Importante: ajusta el tamaño al contenido
-              physics: const NeverScrollableScrollPhysics(), // Evita conflicto de scroll
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 2, 
               childAspectRatio: 3.0,
               padding: const EdgeInsets.all(10),
               children: [
-                botonColorido("Ingreso", Colors.red),
-                botonColorido("Salida", Colors.green),
-                botonColorido("Verificación", Colors.orange),
-                botonColorido("Buscar", Colors.cyan),
-                botonColorido("Comentarios", Colors.yellow[700]!),
-                botonColorido("Parqueadero", Colors.purple),
-                botonColorido("Facturación", Colors.brown),
-                botonColorido("Cédula", Colors.blue),
-                botonColorido("Horarios", Colors.pink),
-                botonColorido("Contratiempos", Colors.lightGreen),
+                // Navegación configurada para móvil enviando el modo inicial
+                botonColorido("Ingreso", Colors.red, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const IngresoPage(modoInicial: "ingreso")))),
+                botonColorido("Salida", Colors.green, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const IngresoPage(modoInicial: "salida")))),
+                botonColorido("Verificación", Colors.orange, () {}),
+                botonColorido("Buscar", Colors.cyan, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const IngresoPage(modoInicial: "buscar")))),
+                
+                // Botón Comentarios sin acción
+                botonColorido("Comentarios", Colors.yellow[700]!, () {}),
+                
+                botonColorido("Parqueadero", Colors.purple, () {}),
+                botonColorido("Facturación", Colors.brown, () {}),
+                botonColorido("Cédula", Colors.blue, () {}),
+                botonColorido("Horarios", Colors.pink, () {}),
+                
+                // BOTÓN CONTRATIEMPOS CONFIGURADO
+                botonColorido("Contratiempos", Colors.lightGreen, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ContratiemposPage()))),
               ],
             ),
-            
             const Divider(),
-            
-            // Lista de información
             ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 5,
-              itemBuilder: (context, index) => const MyTile(),
+              shrinkWrap: true, 
+              physics: const NeverScrollableScrollPhysics(), 
+              itemCount: 5, 
+              itemBuilder: (context, index) => const MyTile()
             ),
           ],
         ),
